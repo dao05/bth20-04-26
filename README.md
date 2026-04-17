@@ -15,3 +15,11 @@ b3: chạy lệnh npm start
 Video demo:
 https://github.com/user-attachments/assets/4d22e688-291d-4bbb-a8c3-2abc59ab3fb5
 
+Nguyễn Xuân Đạo 23810310258 - Bài thực hành 17/04/26: Nectar App - P2 - Home Screen, Product Detail, Explore, Beverages
+<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/e4ad206a-b752-4beb-8269-682ff08d9500" />
+<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/57e65b6d-2bb8-4071-864b-9e7043b67e43" />
+<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/08dd7fa0-8c55-48a4-8869-4d3c198cfef4" />
+<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/a396dc17-df0f-4132-b099-6ddcf8e6295e" />
+<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/4ddf7597-c85c-4acb-97a9-ffeaab2dc11f" />
+<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/0e92c5b6-3576-4dc1-b8f7-416b108b54b6" />
+
