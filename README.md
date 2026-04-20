@@ -1,4 +1,4 @@
-<img width="946" height="2047" alt="23810310258_08_order" src="https://github.com/user-attachments/assets/f210f750-d5f4-4ff4-8aeb-f7d107ddba80" />
+
 ## Thông tin sinh viên
 Nguyễn Xuân Đạo - 23810310258
 
