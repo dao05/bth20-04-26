@@ -1,29 +1,28 @@
-# React Native E-commerce App
-
+<img width="946" height="2047" alt="23810310258_08_order" src="https://github.com/user-attachments/assets/f210f750-d5f4-4ff4-8aeb-f7d107ddba80" />
 ## Thông tin sinh viên
-**Nguyễn Xuân Đạo - 23810310258**
+Nguyễn Xuân Đạo - 23810310258
 
 ## Mô tả chức năng
 
 Ứng dụng thương mại điện tử được xây dựng bằng React Native với các tính năng chính:
 
-### 🔐 Authentication & Storage
+###  Authentication & Storage
 - Đăng nhập với AsyncStorage để lưu trữ token và thông tin user
 - Tự động đăng xuất sau 30 giây không hoạt động
 - Lưu trữ persistent cho giỏ hàng và đơn hàng
 
-### 🛒 Giỏ hàng & Đặt hàng
+###  Giỏ hàng & Đặt hàng
 - Thêm/xóa sản phẩm vào giỏ hàng
 - Lưu giỏ hàng vào AsyncStorage
 - Quy trình checkout và xác nhận đơn hàng
 - Lịch sử đơn hàng
 
-### 👤 Tài khoản người dùng
+###  Tài khoản người dùng
 - Màn hình profile với thông tin cá nhân
 - Điều hướng bottom menu
 - Đăng xuất
 
-### 🎨 Giao diện
+###  Giao diện
 - UI/UX hiện đại với các popup và modal
 - Responsive design
 - Icons và hình ảnh minh họa
@@ -67,23 +66,21 @@
 - Xem lịch sử đơn hàng trong Account
 - Tự động đăng xuất sau 30 giây không hoạt động
 
-## Demo
-![msv_23810310258_splash](https://github.com/user-attachments/assets/52fff47a-8d2e-44c0-b635-7c7423680c72)
-![msv_23810310258_onboarding](https://github.com/user-attachments/assets/2a79802f-4422-400b-901f-86b17cac2433)
-![msv_23810310258_signin](https://github.com/user-attachments/assets/a82fc4d4-53ab-4413-a1b4-629e93533b85)
-![msv_23810310258_number](https://github.com/user-attachments/assets/50d3e2e2-be19-4994-9a61-0974bcb41cbe)
-![msv_23810310258_vertification](https://github.com/user-attachments/assets/a76f70fa-4d37-433d-95a7-a2b2cc913015)
-![msv_23810310258_location](https://github.com/user-attachments/assets/8919693b-6e91-4c14-884a-3f7a45d31692)
-![msv_23810310258_login](https://github.com/user-attachments/assets/dbedc5bc-fe23-49e0-8f8e-e86b5276c635)
-![msv_23810310258_signup](https://github.com/user-attachments/assets/ab570f3e-ad85-4a04-bdc6-f4ea01fbf5a1)
-Video demo:
-https://github.com/user-attachments/assets/4d22e688-291d-4bbb-a8c3-2abc59ab3fb5
+## Ảnh Demo
+<img width="946" height="2047" alt="23810310258_01_login" src="https://github.com/user-attachments/assets/4aa84cf6-8e2d-4dd6-afe3-ceaf1e24839c" />
+<img width="946" height="2047" alt="23810310258_02_autologin" src="https://github.com/user-attachments/assets/25db7ca0-b207-43bb-80b9-0df16780b4e6" />
+<img width="946" height="2047" alt="23810310258_03_logout" src="https://github.com/user-attachments/assets/92bfb0ae-1b02-40e7-b9c8-8b3687b5f3d7" />
+<img width="946" height="2047" alt="23810310258_04_addtocart" src="https://github.com/user-attachments/assets/98ee02d4-bdc1-4b59-bc5f-2ebdec7c23cf" />
+<img width="946" height="2047" alt="23810310258_05_reloadcart" src="https://github.com/user-attachments/assets/d53c0ce6-9b1f-43b6-b1fa-99080b31f288" />
+<img width="946" height="2047" alt="23810310258_06_addquantity" src="https://github.com/user-attachments/assets/60d76089-4cee-441e-9a30-ee87b3099302" />
+<img width="946" height="2047" alt="23810310258_07_succes" src="https://github.com/user-attachments/assets/b7fa78ee-2f0f-45d6-8d92-784b856d63f2" />
+<img width="946" height="2047" alt="23810310258_08_order" src="https://github.com/user-attachments/assets/5b959c00-89e0-4d1d-a4d5-4ff5e472adcc" />
+<img width="946" height="2047" alt="23810310258_09_reloadorder" src="https://github.com/user-attachments/assets/e2188b70-1b19-40ee-9325-6353c3d378f1" />
 
-Nguyễn Xuân Đạo 23810310258 - Bài thực hành 17/04/26: Nectar App - P2 - Home Screen, Product Detail, Explore, Beverages
-<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/e4ad206a-b752-4beb-8269-682ff08d9500" />
-<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/57e65b6d-2bb8-4071-864b-9e7043b67e43" />
-<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/08dd7fa0-8c55-48a4-8869-4d3c198cfef4" />
-<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/a396dc17-df0f-4132-b099-6ddcf8e6295e" />
-<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/4ddf7597-c85c-4acb-97a9-ffeaab2dc11f" />
-<img width="946" height="2048" alt="image" src="https://github.com/user-attachments/assets/0e92c5b6-3576-4dc1-b8f7-416b108b54b6" />
+Video demo:
+https://github.com/user-attachments/assets/cfc4f92b-0f40-458a-afda-6ef7ab78184f
+
+
+
+
 
