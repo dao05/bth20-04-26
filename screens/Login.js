@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
   View,
   Text,
   TextInput,
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  Platform
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../styles/globalStyles";
 import { userInfo } from "../config/user";
+import { useStore } from "../context/StoreContext";
 
 export default function Login({ navigation }) {
+  const [email, setEmail] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const { login, isLoading } = useStore();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -45,6 +50,10 @@ export default function Login({ navigation }) {
           <TextInput
             style={styles.inputRow}
             placeholder="Enter your email"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
           />
 
           {/* PASSWORD */}
@@ -72,9 +81,30 @@ export default function Login({ navigation }) {
           {/* FORGOT */}
           <Text style={styles.forgot}>Forgot Password?</Text>
 
-          {/* LOGIN BUTTON */}
-          <TouchableOpacity style={styles.submitBtn} onPress={() => navigation.replace("Home")}>   
-            <Text style={styles.submitText}>Log In</Text>
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
+          <TouchableOpacity
+            style={styles.submitBtn}
+            disabled={isLoading}
+            onPress={async () => {
+              setError("");
+              if (!email.trim() || !password.trim()) {
+                setError("Please enter an email and password.");
+                return;
+              }
+
+              try {
+                await login(email.trim());
+                navigation.replace("Home");
+              } catch (loginError) {
+                setError(loginError?.message || "Login failed. Please try again.");
+              }
+            }}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <Text style={styles.submitText}>Log In</Text>
+            )}
           </TouchableOpacity>
 
           {/* SIGN UP */}

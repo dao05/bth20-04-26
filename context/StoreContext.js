@@ -1,16 +1,31 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { defaultFavouriteIds, getProductById } from "../data";
+import useStorage from "../hooks/useStorage";
 
 const StoreContext = createContext(null);
 
 export function StoreProvider({ children }) {
-  const [cartItems, setCartItems] = useState({});
+  const [cartItems, setCartItems, clearCart, cartLoading] = useStorage("cart", {});
+  const [orders, setOrders, clearOrders, ordersLoading] = useStorage("orders", []);
+  const [authInfo, setAuthInfo, clearAuthInfo, authLoading] = useStorage("auth", null);
   const [favouriteIds, setFavouriteIds] = useState(defaultFavouriteIds);
   const [filtersApplied, setFiltersApplied] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
     categories: ["eggs"],
     brands: ["cocola"],
   });
+
+  const isLoading = cartLoading || ordersLoading || authLoading;
+  const isAuthenticated = Boolean(
+    authInfo?.token && authInfo?.expiry && authInfo.expiry > Date.now()
+  );
+  const user = authInfo?.email ? { email: authInfo.email } : null;
+
+  useEffect(() => {
+    if (!authLoading && authInfo?.expiry && authInfo.expiry <= Date.now()) {
+      clearAuthInfo();
+    }
+  }, [authInfo, authLoading, clearAuthInfo]);
 
   const addToCart = (productId) => {
     setCartItems((current) => ({
@@ -40,6 +55,52 @@ export function StoreProvider({ children }) {
       delete updated[productId];
       return updated;
     });
+  };
+
+  const login = async (email) => {
+    const token = `token-${email}-${Date.now()}`;
+    const expiry = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days
+
+    await setAuthInfo({ email, token, expiry });
+  };
+
+  const logout = async () => {
+    try {
+      await Promise.all([clearAuthInfo(), clearOrders(), clearCart()]);
+    } catch (error) {
+      console.warn("logout error", error);
+    }
+  };
+
+  const checkout = async () => {
+    const cartProducts = Object.entries(cartItems)
+      .map(([productId, quantity]) => {
+        const product = getProductById(productId);
+        if (!product) return null;
+        return {
+          ...product,
+          quantity,
+        };
+      })
+      .filter(Boolean);
+
+    if (cartProducts.length === 0) {
+      return null;
+    }
+
+    const order = {
+      id: `order-${Date.now()}`,
+      items: cartProducts,
+      total: cartProducts.reduce((total, item) => total + item.price * item.quantity, 0),
+      placedAt: new Date().toISOString(),
+    };
+
+    await Promise.all([
+      setOrders((current) => [order, ...current]),
+      clearCart(),
+    ]);
+
+    return order;
   };
 
   const toggleFavourite = (productId) => {
@@ -95,21 +156,34 @@ export function StoreProvider({ children }) {
       favouriteIds,
       favouriteProducts,
       filtersApplied,
+      isAuthenticated,
+      isLoading,
+      login,
+      logout,
+      orders,
       removeFromCart,
+      checkout,
       setFiltersApplied,
       selectedFilters,
       setSelectedFilters,
       toggleFavourite,
       updateCartQuantity,
+      user,
     }),
     [
+      addAllFavouritesToCart,
+      addToCart,
       cartItems,
       cartProducts,
       cartTotal,
       favouriteIds,
       favouriteProducts,
       filtersApplied,
+      isAuthenticated,
+      isLoading,
+      orders,
       selectedFilters,
+      user,
     ]
   );
 
