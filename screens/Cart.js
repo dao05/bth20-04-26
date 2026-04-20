@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import {
+  Alert,
   Image,
+  Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -47,7 +49,27 @@ function CartRow({ item, onDecrease, onIncrease, onRemove }) {
 }
 
 export default function Cart({ navigation }) {
-  const { cartProducts, cartTotal, addToCart, removeFromCart, updateCartQuantity } = useStore();
+  const [checkoutVisible, setCheckoutVisible] = useState(false);
+  const { cartProducts, cartTotal, addToCart, removeFromCart, updateCartQuantity, checkout } = useStore();
+
+  const handleCheckoutOpen = () => {
+    setCheckoutVisible(true);
+  };
+
+  const handleCheckoutClose = () => {
+    setCheckoutVisible(false);
+  };
+
+  const handlePlaceOrder = async () => {
+    setCheckoutVisible(false);
+    const order = await checkout();
+
+    if (order) {
+      navigation.navigate("OrderAccepted", { orderId: order.id });
+    } else {
+      Alert.alert("Checkout failed", "Please add items to your cart before placing an order.");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -70,12 +92,60 @@ export default function Cart({ navigation }) {
           ) : null}
         </ScrollView>
 
-        <TouchableOpacity style={styles.checkoutButton} disabled={cartProducts.length === 0}>
+        <TouchableOpacity
+          style={styles.checkoutButton}
+          disabled={cartProducts.length === 0}
+          onPress={handleCheckoutOpen}
+        >
           <Text style={styles.checkoutText}>Go to Checkout</Text>
           <View style={styles.totalBadge}>
             <Text style={styles.totalText}>{formatPrice(cartTotal)}</Text>
           </View>
         </TouchableOpacity>
+
+        <Modal transparent visible={checkoutVisible} animationType="fade">
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Checkout</Text>
+                <TouchableOpacity onPress={handleCheckoutClose} style={styles.closeButton}>
+                  <Image source={require("../assets/x.png")} style={styles.closeIcon} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.modalRow}>
+                <Text style={styles.modalLabel}>Delivery</Text>
+                <View style={styles.modalActionRow}>
+                  <Text style={styles.modalActionText}>Select Method</Text>
+                  <Image source={require("../assets/nexticon.png")} style={styles.nextIcon} />
+                </View>
+              </View>
+              <View style={styles.modalRow}>
+                <Text style={styles.modalLabel}>Payment</Text>
+                <View style={styles.modalActionRow}>
+                  <Text style={styles.modalActionText}>Card</Text>
+                  <Image source={require("../assets/nexticon.png")} style={styles.nextIcon} />
+                </View>
+              </View>
+              <View style={styles.modalRow}>
+                <Text style={styles.modalLabel}>Promo Code</Text>
+                <View style={styles.modalActionRow}>
+                  <Text style={styles.modalActionText}>Pick discount</Text>
+                  <Image source={require("../assets/nexticon.png")} style={styles.nextIcon} />
+                </View>
+              </View>
+              <View style={styles.modalRow}> 
+                <Text style={styles.modalLabel}>Total Cost</Text>
+                <Text style={styles.modalPrice}>{formatPrice(cartTotal)}</Text>
+              </View>
+              <Text style={styles.modalDisclaimer}>
+                By placing an order you agree to our Terms And Conditions
+              </Text>
+              <TouchableOpacity style={styles.placeOrderButton} onPress={handlePlaceOrder}>
+                <Text style={styles.placeOrderText}>Place Order</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
         <BottomMenu navigation={navigation} active="Cart" />
       </View>
@@ -221,6 +291,93 @@ const styles = StyleSheet.create({
   totalText: {
     color: "#FFFFFF",
     fontSize: 12,
+    fontWeight: "700",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.35)",
+    justifyContent: "flex-end",
+  },
+  modalCard: {
+    backgroundColor: "#FFFFFF",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 24,
+    paddingBottom: 40,
+    minHeight: 420,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#181725",
+  },
+  closeButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#F1F3F5",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  closeIcon: {
+    width: 16,
+    height: 16,
+    resizeMode: "contain",
+  },
+  modalRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F0F0F0",
+  },
+  modalLabel: {
+    fontSize: 15,
+    color: "#181725",
+    fontWeight: "600",
+  },
+  modalActionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  modalActionText: {
+    fontSize: 14,
+    color: "#7C7C7C",
+  },
+  nextIcon: {
+    width: 14,
+    height: 14,
+    resizeMode: "contain",
+  },
+  modalPrice: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#181725",
+  },
+  modalDisclaimer: {
+    fontSize: 12,
+    color: "#7C7C7C",
+    marginTop: 20,
+    marginBottom: 16,
+    lineHeight: 18,
+  },
+  placeOrderButton: {
+    backgroundColor: "#53B175",
+    borderRadius: 18,
+    paddingVertical: 16,
+    alignItems: "center",
+  },
+  placeOrderText: {
+    color: "#FFFFFF",
+    fontSize: 16,
     fontWeight: "700",
   },
 });

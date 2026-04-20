@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    
   },
   locationIcon: {
     width: 16,
