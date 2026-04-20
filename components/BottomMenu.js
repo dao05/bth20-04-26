@@ -34,6 +34,9 @@ export default function BottomMenu({ navigation, active }) {
               if (item.key === "Favourite") {
                 navigation.navigate("Favourite");
               }
+              if (item.key === "Account") {
+                navigation.navigate("Account");
+              }
             }}
           >
             <Image source={item.icon} style={[styles.icon, isActive && styles.activeIcon]} />

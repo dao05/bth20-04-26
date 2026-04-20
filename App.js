@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import { PanResponder, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 // Import all screen components
@@ -18,15 +19,57 @@ import Search from "./screens/Search";
 import Filter from "./screens/Filter";
 import Cart from "./screens/Cart";
 import Favourite from "./screens/Favourite";
-import { StoreProvider } from "./context/StoreContext";
-
+import Orders from "./screens/Orders";
+import Account from "./screens/Account";
+import OrderAccepted from "./screens/OrderAccepted";
+import { StoreProvider, useStore } from "./context/StoreContext";
 
 const Stack = createStackNavigator();
 
-export default function App() {
+function AppContent() {
+  const navigationRef = useRef();
+  const timeoutRef = useRef();
+  const { logout, isAuthenticated } = useStore();
+
+  const resetTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    if (isAuthenticated) {
+      console.log('Setting auto-logout timeout for 30 seconds');
+      timeoutRef.current = setTimeout(async () => {
+        console.log('Auto-logout triggered!');
+        await logout();
+        navigationRef.current?.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        });
+      }, 10000); // 10 seconds for testing
+    }
+  };
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: resetTimeout,
+      onPanResponderMove: resetTimeout,
+      onPanResponderRelease: resetTimeout,
+    })
+  );
+
+  useEffect(() => {
+    resetTimeout();
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [isAuthenticated]);
+
   return (
-    <StoreProvider>
-      <NavigationContainer>
+    <View style={{ flex: 1 }} {...panResponder.current.panHandlers}>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Splash" component={Splash} />
           <Stack.Screen name="Onboarding" component={Onboarding} />
@@ -43,9 +86,20 @@ export default function App() {
           <Stack.Screen name="Search" component={Search} />
           <Stack.Screen name="Filter" component={Filter} />
           <Stack.Screen name="Cart" component={Cart} />
+          <Stack.Screen name="OrderAccepted" component={OrderAccepted} />
+          <Stack.Screen name="Orders" component={Orders} />
+          <Stack.Screen name="Account" component={Account} />
           <Stack.Screen name="Favourite" component={Favourite} />
         </Stack.Navigator>
       </NavigationContainer>
+    </View>
+  );
+}
+
+export default function App() {
+  return (
+    <StoreProvider>
+      <AppContent />
     </StoreProvider>
   );
 }
