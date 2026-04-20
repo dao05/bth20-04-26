@@ -239,15 +239,15 @@ export default StyleSheet.create({
     color: "#888",
   },
   labelemail: {
-    fontsize: 16,
+    fontSize: 16,
     paddingTop: 10,
     paddingBottom: 10,
   },
-    labelpassword: {
-        fontsize: 16,
+  labelpassword: {
+    fontSize: 16,
     paddingTop: 10,
     paddingBottom: 10,
-    },
+  },
   dropdownList: {
   position: "absolute",
   top: 45,
@@ -274,6 +274,13 @@ export default StyleSheet.create({
     textAlign: "right",
     marginVertical: 10,
     color: "#888",
+  },
+
+  errorText: {
+    color: "#D62828",
+    textAlign: "center",
+    marginBottom: 10,
+    fontWeight: "600",
   },
 
   bottomText: {

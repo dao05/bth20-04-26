@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
+  Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -30,7 +31,12 @@ function FavouriteRow({ item }) {
 }
 
 export default function Favourite({ navigation }) {
-  const { addAllFavouritesToCart, favouriteProducts } = useStore();
+  const [errorVisible, setErrorVisible] = useState(false);
+  const { favouriteProducts } = useStore();
+
+  const handleAddAll = () => {
+    setErrorVisible(true);
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -47,9 +53,43 @@ export default function Favourite({ navigation }) {
           ) : null}
         </ScrollView>
 
-        <TouchableOpacity style={styles.addAllButton} onPress={addAllFavouritesToCart}>
+        <TouchableOpacity style={styles.addAllButton} onPress={handleAddAll}>
           <Text style={styles.addAllText}>Add All To Cart</Text>
         </TouchableOpacity>
+
+        <Modal transparent visible={errorVisible} animationType="fade">
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalCard}>
+              <TouchableOpacity
+                style={styles.modalClose}
+                onPress={() => setErrorVisible(false)}
+              >
+                <Image source={require("../assets/x.png")} style={styles.closeIcon} />
+              </TouchableOpacity>
+              <Image
+                source={require("../assets/fail.png")}
+                style={styles.errorImage}
+              />
+              <Text style={styles.errorTitle}>Oops! Order Failed</Text>
+              <Text style={styles.errorSubtitle}>Something went tembly wrong.</Text>
+              <TouchableOpacity
+                style={styles.retryButton}
+                onPress={() => setErrorVisible(false)}
+              >
+                <Text style={styles.retryText}>Please Try Again</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.backHomeButton}
+                onPress={() => {
+                  setErrorVisible(false);
+                  navigation.navigate("Home");
+                }}
+              >
+                <Text style={styles.backHomeText}>Back to home</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
         <BottomMenu navigation={navigation} active="Favourite" />
       </View>
@@ -142,6 +182,82 @@ const styles = StyleSheet.create({
   addAllText: {
     color: "#FFFFFF",
     fontSize: 18,
+    fontWeight: "700",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.35)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalCard: {
+    width: "85%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 24,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
+    elevation: 12,
+  },
+  modalClose: {
+    position: "absolute",
+    top: 18,
+    right: 18,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#F1F3F5",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  closeIcon: {
+    width: 14,
+    height: 14,
+    resizeMode: "contain",
+  },
+  errorImage: {
+    width: 150,
+    height: 150,
+    resizeMode: "contain",
+    marginBottom: 20,
+  },
+  errorTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#181725",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  errorSubtitle: {
+    fontSize: 14,
+    color: "#7C7C7C",
+    textAlign: "center",
+    marginBottom: 24,
+    lineHeight: 20,
+  },
+  retryButton: {
+    width: "100%",
+    backgroundColor: "#53B175",
+    borderRadius: 18,
+    paddingVertical: 16,
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  retryText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  backHomeButton: {
+    width: "100%",
+    alignItems: "center",
+    paddingVertical: 16,
+  },
+  backHomeText: {
+    color: "#181725",
+    fontSize: 16,
     fontWeight: "700",
   },
 });
